@@ -1,0 +1,37 @@
+[project]
+name = "tg-bot-umschool"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "adaptix>=3.0.0b9",
+    "aiogram>=3.15.0",
+    "aiohttp>=3.10.11",
+    "alembic>=1.14.0",
+    "asyncpg>=0.30.0",
+    "elastic-apm>=6.23.0",
+    "punq>=0.7.0",
+    "sqlalchemy>=2.0.36",
+    "uvicorn>=0.33.0",
+]
+
+[tool.uv.workspace]
+members = ["r"]
+
+[dependency-groups]
+dev = [
+    "ipython>=8.30.0",
+    "pre-commit>=4.0.1",
+]
+test = [
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.25.0",
+    "pytest-cov>=6.0.0",
+    "testcontainers>=4.9.0",
+]
+lint = [
+    "mypy>=1.13.0",
+    "pylint>=3.3.2",
+    "ruff>=0.8.3",
+]
