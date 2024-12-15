@@ -1,4 +1,4 @@
-from aiohttp.web import RouteTableDef, Request, Response, json_response
+from aiohttp.web import Request, Response, RouteTableDef, json_response
 
 
 healthcheck_router = RouteTableDef()

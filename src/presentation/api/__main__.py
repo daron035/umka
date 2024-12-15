@@ -1,4 +1,7 @@
 import asyncio
+
+import anyio
+
 from aiohttp import web
 
 from src.presentation.api.main import init_app
@@ -12,8 +15,7 @@ async def main() -> None:
     site = web.TCPSite(runner, "localhost", 8000)
     await site.start()
 
-    while True:
-        await asyncio.sleep(3600)  # sleep forever
+    await anyio.Event().wait()
 
 
 if __name__ == "__main__":
