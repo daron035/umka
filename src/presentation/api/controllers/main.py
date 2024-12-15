@@ -1,7 +1,7 @@
 from aiohttp.web import Application
 
-from .healthcheck import healthcheck_router
+from .general import general_router
 
 
 def setup_controllers(app: Application) -> None:
-    app.add_routes(healthcheck_router)
+    app.add_routes(general_router)

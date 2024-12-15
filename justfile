@@ -10,9 +10,18 @@ install:
 lint:
 	just _py pre-commit run --all-files
 
-# Up container
+# Up api container
+api:
+  docker compose --profile api up --build -d
+
+# Up postgres container
+pg:
+  docker compose --profile postgres_db up --build -d
+
+# Up entire project
 up:
-  docker compose up --build
+  docker compose --profile api \
+    --profile postgres_db up --build -d
 
 
 _py *args:
