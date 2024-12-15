@@ -1,7 +1,6 @@
-from aiohttp.web import run_app
-
-from src.presentation.api.main import init_app
+import asyncio
+from src.presentation.api.__main__ import main
 
 
 if __name__ == "__main__":
-    run_app(init_app(), port=8000)
+    asyncio.run(main())
