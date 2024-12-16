@@ -41,4 +41,3 @@ async def test_create_user_handler_success(
 
     assert uow.committed is True
     assert uow.rolled_back is False
-
