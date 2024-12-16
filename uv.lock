@@ -1011,6 +1011,7 @@ lint = [
     { name = "ruff" },
 ]
 test = [
+    { name = "anyio" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
@@ -1045,6 +1046,7 @@ lint = [
     { name = "ruff", specifier = ">=0.8.3" },
 ]
 test = [
+    { name = "anyio", specifier = ">=4.7.0" },
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "pytest-asyncio", specifier = ">=0.25.0" },
     { name = "pytest-cov", specifier = ">=6.0.0" },

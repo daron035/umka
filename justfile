@@ -10,6 +10,10 @@ install:
 lint:
 	just _py pre-commit run --all-files
 
+# Run tests
+test *args:
+  just _py pytest {{args}}
+
 # Up api container
 api:
   docker compose --profile api up --build -d
