@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from uuid import UUID
 
 from src.application.common.interfaces.uow import UnitOfWork
+from src.application.common.transactional import transactional
 from src.application.user.interfaces.persistence.repo import UserRepo
 from src.domain.user.entities import User
 from src.domain.user.value_objects import FullName, UserId
@@ -28,6 +29,7 @@ class CreateUserHandler(CommandHandler[CreateUser, UUID]):
     uow: UnitOfWork
     mediator: EventMediator
 
+    @transactional
     async def __call__(self, command: CreateUser) -> UUID:
         user_id = UserId()
         full_name = FullName(command.first_name, command.last_name, command.middle_name)
