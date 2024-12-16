@@ -10,8 +10,9 @@ from src.infrastructure.postgres.main import PostgresManager
 from src.infrastructure.postgres.services.healthcheck import PgHealthCheck, PostgresHealthcheckService
 from src.infrastructure.postgres.uow import SQLAlchemyUoW
 from src.infrastructure.uow import build_uow
-from src.presentation.api.config import APIConfig, Config
+from src.presentation.api.config import APIConfig
 from src.presentation.bot.config import TelegramConfig
+from src.presentation.config import Config
 
 
 @lru_cache(1)

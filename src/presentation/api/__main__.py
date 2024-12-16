@@ -1,12 +1,18 @@
 import asyncio
 
+from typing import TYPE_CHECKING
+
 import anyio
 
 from aiohttp import web
 
 from src.infrastructure.config_loader import load_config
-from src.presentation.api.config import APIConfig, Config
 from src.presentation.api.main import init_app
+from src.presentation.config import Config
+
+
+if TYPE_CHECKING:
+    from src.presentation.api.config import APIConfig
 
 
 async def main() -> None:

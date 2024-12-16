@@ -3,15 +3,15 @@ from aiogram.filters import CommandStart
 from aiohttp.web import Application
 
 from src.infrastructure.containers import get_container
-from src.presentation.api.config import Config
 from src.presentation.bot.config import TelegramConfig
 from src.presentation.bot.handlers.start import start_handler
 from src.presentation.bot.views import TelegramWebhookView
+from src.presentation.config import Config
 
 
 async def telegram_view_factory(config: TelegramConfig) -> TelegramWebhookView:
     bot = Bot(token=config.TELEGRAM_API_KEY)
-    await bot.set_webhook(config.TELEGRAM_WEB_HOOK)
+    await bot.set_webhook(config.telegram_web_hook)
 
     dispatcher = Dispatcher()
     dispatcher.message.register(start_handler, CommandStart())
