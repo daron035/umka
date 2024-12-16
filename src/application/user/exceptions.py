@@ -20,12 +20,3 @@ class UserIdNotExistError(ApplicationError):
     @property
     def title(self) -> str:
         return f'A user with "{self.user_id}" user_id doesn\'t exist'
-
-
-@dataclass(eq=False)
-class UsernameNotExistError(ApplicationError):
-    username: str
-
-    @property
-    def title(self) -> str:
-        return f'A user with "{self.username}" username doesn\'t exist'

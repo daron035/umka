@@ -1,7 +1,7 @@
 from src.application.user.exceptions import UserIdNotExistError
 from src.application.user.interfaces.persistence import UserRepo
 from src.domain.user import entities
-from src.domain.user.value_objects import UserId, Username
+from src.domain.user.value_objects import UserId
 
 
 class UserRepoMock(UserRepo):
@@ -19,6 +19,3 @@ class UserRepoMock(UserRepo):
     async def update_user(self, user: entities.User) -> None:
         self.users[user.id] = user
 
-    async def get_existing_usernames(self) -> set[Username]:
-        usernames = {user.username for user in self.users.values()}
-        return usernames

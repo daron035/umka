@@ -1,5 +1,5 @@
 from aiogram import Bot, Dispatcher, F
-from aiogram.filters import CommandStart
+from aiogram.filters import Command, CommandStart
 from aiohttp.web import Application
 
 from src.infrastructure.containers import get_container
@@ -15,6 +15,7 @@ def add_handlers(dispatcher: Dispatcher) -> None:
     dispatcher.message.register(start_handler, CommandStart())
     dispatcher.callback_query.register(start_handler, F.data == "start")
 
+    dispatcher.message.register(start_register_user, Command("register"))
     dispatcher.callback_query.register(start_register_user, F.data == "start_register_user")
 
     dispatcher.message.register(process_first_name, RegisterState.first_name)

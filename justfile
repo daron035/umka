@@ -27,6 +27,18 @@ up:
   docker compose --profile api \
     --profile postgres_db up --build -d
 
+# Alembic migrations
+makemigrations message="$(m)":
+	alembic revision --autogenerate -m="{{message}}"
+
+# Alembic migrate
+migrate:
+	just _py alembic upgrade head
+
+# Alembic downgrade
+downgrade:
+	just _py alembic downgrade -1
+
 
 _py *args:
   uv run {{args}}

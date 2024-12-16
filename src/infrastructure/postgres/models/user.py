@@ -15,7 +15,6 @@ class User(TimedBaseModel):
     __mapper_args__: ClassVar[dict[Any, Any]] = {"eager_defaults": True}
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7, server_default=sa.func.uuid_generate_v7())
-    username: Mapped[str] = mapped_column(unique=True)
     first_name: Mapped[str]
     last_name: Mapped[str]
     middle_name: Mapped[str | None]
