@@ -10,7 +10,7 @@ from src.presentation.api.main import init_app
 
 
 async def main() -> None:
-    app = init_app()
+    app = await init_app()
     config: Config = load_config(Config)
     api_config: APIConfig = config.api
 

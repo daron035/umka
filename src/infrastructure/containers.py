@@ -11,6 +11,7 @@ from src.infrastructure.postgres.services.healthcheck import PgHealthCheck, Post
 from src.infrastructure.postgres.uow import SQLAlchemyUoW
 from src.infrastructure.uow import build_uow
 from src.presentation.api.config import APIConfig, Config
+from src.presentation.bot.config import TelegramConfig
 
 
 @lru_cache(1)
@@ -33,6 +34,7 @@ def setup_config(container: Container) -> None:
 
     container.register(APIConfig, instance=conf.api)
     container.register(PostgresConfig, instance=conf.postgres_db)
+    container.register(TelegramConfig, instance=conf.telegram)
 
 
 def setup_db(container: Container) -> None:

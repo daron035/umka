@@ -1,10 +1,6 @@
-from collections.abc import AsyncGenerator
-from contextlib import asynccontextmanager
-
 import orjson
 
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from src.infrastructure.postgres.config import PostgresConfig
 
@@ -36,25 +32,3 @@ class PostgresManager:
             expire_on_commit=False,
         )
         self.session_factory = async_sessionmaker(bind=self._async_engine, autoflush=False, expire_on_commit=False)
-
-    @asynccontextmanager
-    async def get_session(self) -> AsyncGenerator[AsyncSession]:
-        session: AsyncSession = self.session_factory()
-        try:
-            yield session
-        except SQLAlchemyError:
-            await session.rollback()
-            raise
-        finally:
-            await session.commit()
-            await session.close()
-
-    @asynccontextmanager
-    async def get_read_only_session(self) -> AsyncGenerator[AsyncSession]:
-        session: AsyncSession = self.read_only_session_factory()
-        try:
-            yield session
-        except SQLAlchemyError:
-            raise
-        finally:
-            await session.close()

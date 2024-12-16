@@ -1,12 +1,14 @@
 from aiohttp import web
 
 from src.presentation.api.controllers.main import setup_controllers
+from src.presentation.bot.main import setup_tg_router
 
 
-def init_app() -> web.Application:
+async def init_app() -> web.Application:
     app = web.Application()
 
     setup_controllers(app)
+    await setup_tg_router(app)
 
     return app
 
