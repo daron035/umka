@@ -13,5 +13,5 @@ echo = true
 
 [telegram]
 TELEGRAM_API_KEY = "5511764565:AAEKLFWxhsVmvsW692-I6FHT8xx9ZS_G4uo"
-TELEGRAM_WEBHOOK_HOST = "https://8edc-178-129-139-93.ngrok-free.app"
+TELEGRAM_WEBHOOK_HOST = "https://224a-178-129-139-93.ngrok-free.app"
 TELEGRAM_WEBHOOK_PATH = "/webhooks/telegram"
