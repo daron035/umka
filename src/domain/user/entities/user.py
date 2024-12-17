@@ -7,6 +7,7 @@ from typing import Self
 from src.domain.common.entities.aggregate_root import AggregateRoot
 from src.domain.user.events.user_created import UserCreated
 from src.domain.user.exceptions import (
+    TelegramUserAlreadyExistsError,
     UserIsDeletedError,
 )
 from src.domain.user.value_objects import FullName, TgUserId, UserId
@@ -25,8 +26,12 @@ class User(AggregateRoot):
         cls,
         user_id: UserId,
         full_name: FullName,
-        telegram_id: TgUserId
+        telegram_id: TgUserId,
+        exists: bool,
     ) -> Self:
+        if exists:
+            raise TelegramUserAlreadyExistsError(str(full_name), telegram_id.to_raw())
+
         user = cls(user_id, full_name, telegram_id)
         user.record_event(
             UserCreated(

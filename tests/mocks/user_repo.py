@@ -5,13 +5,12 @@ from src.domain.user.value_objects import UserId
 
 
 class UserRepoMock(UserRepo):
+    # TODO UserId -> User
     def __init__(self) -> None:
         self.users: dict[UserId, entities.User] = {}
 
-    async def acquire_user_by_id(self, user_id: UserId) -> entities.User:
-        if user_id not in self.users:
-            raise UserIdNotExistError(user_id.to_raw())
-        return self.users[user_id]
+    # async def exists_user_by_tg_id(self, tg_user_id: TgUserId) -> bool:
+    #     return tg_user_id.to_raw() in self.users
 
     async def add_user(self, user: entities.User) -> None:
         self.users[user.id] = user

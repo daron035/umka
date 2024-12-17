@@ -33,9 +33,10 @@ class CreateUserHandler(CommandHandler[CreateUser, UUID]):
     async def __call__(self, command: CreateUser) -> UUID:
         user_id = UserId()
         full_name = FullName(command.first_name, command.last_name)
-        telegram_id = TgUserId(command.telegram_id)
+        tg_user_id = TgUserId(command.telegram_id)
 
-        user = User.create(user_id, full_name, telegram_id)
+        exists = await self.user_repo.exists_user_by_tg_id(tg_user_id)
+        user = User.create(user_id, full_name, tg_user_id, exists)
         await self.user_repo.add_user(user)
         await self.mediator.publish(user.pull_events())
         await self.uow.commit()
