@@ -10,11 +10,9 @@ class User(DTO):
     username: str
     first_name: str
     last_name: str
-    middle_name: str | None
+    telegram_id: int | None
     deleted_at: None = field(default=None, init=False)
 
     @property
     def full_name(self) -> str:
-        if self.middle_name:
-            return f"{self.first_name} {self.middle_name} {self.last_name}"
         return f"{self.first_name} {self.last_name}"

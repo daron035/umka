@@ -10,12 +10,10 @@ class DeletedUser(DTO):
     id: UUID
     first_name: str
     last_name: str
-    middle_name: str | None
+    telegram_id: int | None
     deleted_at: datetime
     username: None = field(init=False, default=None)
 
     @property
     def full_name(self) -> str:
-        if self.middle_name:
-            return f"{self.first_name} {self.middle_name} {self.last_name}"
         return f"{self.first_name} {self.last_name}"

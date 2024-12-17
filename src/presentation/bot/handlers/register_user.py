@@ -28,7 +28,7 @@ async def process_last_name(message: types.Message, state: FSMContext) -> None:
     last_name = message.text
 
     mediator: MediatorImpl = get_container().resolve(MediatorImpl)
-    user = CreateUser(first_name, last_name, None)
+    user = CreateUser(first_name, last_name, message.from_user.id)
 
     try:
         await mediator.send(user)

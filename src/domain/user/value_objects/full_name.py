@@ -36,7 +36,6 @@ class WrongNameFormatError(WrongNameValueError):
 class FullName(BaseValueObject):
     first_name: str
     last_name: str
-    middle_name: str | None = None
 
     def _validate(self) -> None:
         if len(self.first_name) == 0:
@@ -53,15 +52,5 @@ class FullName(BaseValueObject):
         if NAME_PATTERN.match(self.last_name) is None:
             raise WrongNameFormatError(self.last_name, f'Wrong last name format "{self.last_name}"')
 
-        if self.middle_name is not None:
-            if len(self.middle_name) == 0:
-                raise EmptyNameError(self.middle_name, "Middle name can't be empty")
-            if len(self.middle_name) > MAX_NAME_LENGTH:
-                raise TooLongNameError(self.middle_name, f'Too long middle name "{self.middle_name}"')
-            if NAME_PATTERN.match(self.middle_name) is None:
-                raise WrongNameFormatError(self.middle_name, f'Wrong middle name format "{self.middle_name}"')
-
     def __str__(self) -> str:
-        if self.middle_name is None:
-            return f"{self.first_name} {self.last_name}"
-        return f"{self.first_name} {self.middle_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name}"

@@ -17,5 +17,5 @@ class User(TimedBaseModel):
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7, server_default=sa.func.uuid_generate_v7())
     first_name: Mapped[str]
     last_name: Mapped[str]
-    middle_name: Mapped[str | None]
+    telegram_id: Mapped[int | None]
     deleted_at: Mapped[datetime | None] = mapped_column(default=None, server_default=sa.Null())

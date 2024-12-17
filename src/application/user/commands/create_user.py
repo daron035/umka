@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 class CreateUser(Command[UUID]):
     first_name: str
     last_name: str
-    middle_name: str | None
+    telegram_id: int | None
 
 
 @dataclass(frozen=True)
@@ -32,9 +32,9 @@ class CreateUserHandler(CommandHandler[CreateUser, UUID]):
     @transactional
     async def __call__(self, command: CreateUser) -> UUID:
         user_id = UserId()
-        full_name = FullName(command.first_name, command.last_name, command.middle_name)
+        full_name = FullName(command.first_name, command.last_name)
 
-        user = User.create(user_id, full_name)
+        user = User.create(user_id, full_name, command.telegram_id)
         await self.user_repo.add_user(user)
         await self.mediator.publish(user.pull_events())
         await self.uow.commit()

@@ -9,4 +9,4 @@ class UserCreated(Event):
     user_id: UUID
     first_name: str
     last_name: str
-    middle_name: str | None
+    telegram_id: int | None

@@ -19,14 +19,15 @@ async def test_create_user_handler_success(
     command = CreateUser(
         first_name="Joe",
         last_name="Peach",
-        middle_name=None,
+        telegram_id=234,
     )
 
     user_id_result: UUID = await handler(command)
 
     user = user_repo.users[UserId(user_id_result)]
 
-    assert user.full_name == FullName(command.first_name, command.last_name, command.middle_name)
+    assert user.full_name == FullName(command.first_name, command.last_name)
+    assert user.telegram_id == 234
     assert user.deleted_at == DeletionTime(None)
 
     assert len(event_mediator.published_events) == 1
@@ -34,7 +35,7 @@ async def test_create_user_handler_success(
     assert isinstance(published_event, UserCreated)
     assert published_event.first_name == command.first_name
     assert published_event.last_name == command.last_name
-    assert published_event.middle_name == command.middle_name
+    assert published_event.telegram_id == command.telegram_id
 
     assert uow.committed is True
     assert uow.rolled_back is False

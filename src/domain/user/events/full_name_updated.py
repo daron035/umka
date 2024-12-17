@@ -9,4 +9,3 @@ class FullNameUpdated(Event):
     user_id: UUID
     first_name: str
     last_name: str
-    middle_name: str | None

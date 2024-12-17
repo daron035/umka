@@ -20,6 +20,7 @@ from src.domain.user.value_objects.deleted_status import DeletionTime
 class User(AggregateRoot):
     id: UserId
     full_name: FullName
+    telegram_id: int | None
     deleted_at: DeletionTime = field(default=DeletionTime.create_not_deleted(), kw_only=True)
 
     @classmethod
@@ -27,14 +28,15 @@ class User(AggregateRoot):
         cls,
         user_id: UserId,
         full_name: FullName,
+        telegram_id: int | None
     ) -> Self:
-        user = cls(user_id, full_name)
+        user = cls(user_id, full_name, telegram_id)
         user.record_event(
             UserCreated(
                 user_id.to_raw(),
                 full_name.first_name,
                 full_name.last_name,
-                full_name.middle_name,
+                telegram_id,
             ),
         )
         return user
