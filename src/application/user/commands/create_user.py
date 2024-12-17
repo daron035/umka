@@ -7,7 +7,7 @@ from src.application.common.interfaces.uow import UnitOfWork
 from src.application.common.transactional import transactional
 from src.application.user.interfaces.persistence.repo import UserRepo
 from src.domain.user.entities import User
-from src.domain.user.value_objects import FullName, UserId
+from src.domain.user.value_objects import FullName, TgUserId, UserId
 from src.infrastructure.mediator.interface.entities.command import Command
 from src.infrastructure.mediator.interface.handlers.command import CommandHandler
 from src.infrastructure.mediator.interface.mediator import EventMediator
@@ -33,8 +33,9 @@ class CreateUserHandler(CommandHandler[CreateUser, UUID]):
     async def __call__(self, command: CreateUser) -> UUID:
         user_id = UserId()
         full_name = FullName(command.first_name, command.last_name)
+        telegram_id = TgUserId(command.telegram_id)
 
-        user = User.create(user_id, full_name, command.telegram_id)
+        user = User.create(user_id, full_name, telegram_id)
         await self.user_repo.add_user(user)
         await self.mediator.publish(user.pull_events())
         await self.uow.commit()

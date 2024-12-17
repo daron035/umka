@@ -9,10 +9,7 @@ from src.domain.user.events.user_created import UserCreated
 from src.domain.user.exceptions import (
     UserIsDeletedError,
 )
-from src.domain.user.value_objects import (
-    FullName,
-    UserId,
-)
+from src.domain.user.value_objects import FullName, TgUserId, UserId
 from src.domain.user.value_objects.deleted_status import DeletionTime
 
 
@@ -20,7 +17,7 @@ from src.domain.user.value_objects.deleted_status import DeletionTime
 class User(AggregateRoot):
     id: UserId
     full_name: FullName
-    telegram_id: int | None
+    telegram_id: TgUserId
     deleted_at: DeletionTime = field(default=DeletionTime.create_not_deleted(), kw_only=True)
 
     @classmethod
@@ -28,7 +25,7 @@ class User(AggregateRoot):
         cls,
         user_id: UserId,
         full_name: FullName,
-        telegram_id: int | None
+        telegram_id: TgUserId
     ) -> Self:
         user = cls(user_id, full_name, telegram_id)
         user.record_event(
@@ -36,7 +33,7 @@ class User(AggregateRoot):
                 user_id.to_raw(),
                 full_name.first_name,
                 full_name.last_name,
-                telegram_id,
+                telegram_id.to_raw(),
             ),
         )
         return user

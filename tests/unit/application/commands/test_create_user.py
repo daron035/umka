@@ -5,6 +5,7 @@ from src.application.user.commands import CreateUser, CreateUserHandler
 from src.domain.user.events import UserCreated
 from src.domain.user.value_objects import FullName, UserId
 from src.domain.user.value_objects.deleted_status import DeletionTime
+from src.domain.user.value_objects.tg_user_id import TgUserId
 from tests.mocks import EventMediatorMock, UserRepoMock
 from tests.mocks.uow import UnitOfWorkMock
 
@@ -27,7 +28,7 @@ async def test_create_user_handler_success(
     user = user_repo.users[UserId(user_id_result)]
 
     assert user.full_name == FullName(command.first_name, command.last_name)
-    assert user.telegram_id == 234
+    assert user.telegram_id == TgUserId(value=234)
     assert user.deleted_at == DeletionTime(None)
 
     assert len(event_mediator.published_events) == 1
