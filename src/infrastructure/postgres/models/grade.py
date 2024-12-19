@@ -14,6 +14,7 @@ class Grade(TimedBaseModel):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     subject_id: Mapped[int] = mapped_column(ForeignKey("subjects.id"), nullable=False)
-    grade: Mapped[int] = mapped_column(nullable=False)
+    score: Mapped[int] = mapped_column(nullable=False)
+
     user: Mapped["User"] = relationship(back_populates="grades")
     subject: Mapped["Subject"] = relationship()

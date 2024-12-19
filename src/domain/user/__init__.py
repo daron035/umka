@@ -1,8 +1,8 @@
 from . import events
-from .entities import User
+from .entities import UserEntity
 
 
 __all__ = (
-    "User",
+    "UserEntity",
     "events",
 )

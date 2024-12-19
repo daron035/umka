@@ -9,9 +9,6 @@ class UserRepoMock(UserRepo):
     def __init__(self) -> None:
         self.users: dict[UserId, entities.User] = {}
 
-    # async def exists_user_by_tg_id(self, tg_user_id: TgUserId) -> bool:
-    #     return tg_user_id.to_raw() in self.users
-
     async def add_user(self, user: entities.User) -> None:
         self.users[user.id] = user
 

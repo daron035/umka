@@ -7,7 +7,6 @@ from src.application.common.dto import DTO
 @dataclass(frozen=True)
 class User(DTO):
     id: UUID
-    username: str
     first_name: str
     last_name: str
     telegram_id: int | None

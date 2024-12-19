@@ -23,19 +23,25 @@ async def process_first_name(message: types.Message, state: FSMContext) -> None:
 
 @callback_handler_wrapper
 async def process_last_name(message: types.Message, state: FSMContext) -> None:
+    await state.update_data(last_name=message.text)
     data = await state.get_data()
-    first_name = data.get("first_name")
-    last_name = message.text
+    # first_name = data.get("first_name")
+    # last_name = data.get("last_name")
+    first_name = data["first_name"]
+    last_name = data["last_name"]
 
     mediator: MediatorImpl = get_container().resolve(MediatorImpl)
+    # user = CreateUser(first_name, last_name, message.from_user.id)
     user = CreateUser(first_name, last_name, message.from_user.id)
 
     try:
         await mediator.send(user)
     except:
         await message.answer("Что-то пошло не так, попробуйте с начала.")
+        await state.clear()
+        await state.set_state(RegisterState.first_name)
         await start_register_user(message)
-        return
+        # return
 
     await message.answer(f"Регистрация завершена! 🎉\nИмя: {first_name}\nФамилия: {last_name}")
     await state.clear()

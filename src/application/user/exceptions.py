@@ -6,7 +6,7 @@ from src.application.common.exceptions import ApplicationError
 
 @dataclass(eq=False)
 class UserIdAlreadyExistsError(ApplicationError):
-    user_id: UUID
+    user_id: UUID | int
 
     @property
     def title(self) -> str:
@@ -15,7 +15,7 @@ class UserIdAlreadyExistsError(ApplicationError):
 
 @dataclass(eq=False)
 class UserIdNotExistError(ApplicationError):
-    user_id: UUID
+    user_id: UUID | int
 
     @property
     def title(self) -> str:

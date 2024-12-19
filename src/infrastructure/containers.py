@@ -1,16 +1,22 @@
+# pyright: reportArgumentType=false, reportAssignmentType=false
+
 from functools import lru_cache
 
 from punq import Container, Scope
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.application.common.interfaces.uow import UnitOfWork
+from src.application.grade_book.commands.enter_grade import EnterGrade, EnterGradeHandler
+from src.application.grade_book.interfaces.persistence.reader import GradeBookReader
 from src.application.user.commands.create_user import CreateUser, CreateUserHandler
-from src.application.user.interfaces.persistence.repo import UserRepo
+from src.application.user.interfaces.persistence.reader import UserReader
+from src.application.user.interfaces.persistence.repo import GradeBookRepo, UserRepo
 from src.infrastructure.config_loader import load_config
 from src.infrastructure.mediator.mediator import MediatorImpl
 from src.infrastructure.postgres.config import PostgresConfig
 from src.infrastructure.postgres.main import PostgresManager
-from src.infrastructure.postgres.repositories.user import UserRepoImpl
+from src.infrastructure.postgres.repositories.grade_book import GradeBookReaderImpl, GradeBookRepoImpl
+from src.infrastructure.postgres.repositories.user import UserReaderImpl, UserRepoImpl
 from src.infrastructure.postgres.services.healthcheck import PgHealthCheck, PostgresHealthcheckService
 from src.infrastructure.postgres.uow import SQLAlchemyUoW
 from src.infrastructure.uow import build_uow
@@ -52,14 +58,25 @@ def setup_mediator(container: Container) -> MediatorImpl:
         uow=container.resolve(UnitOfWork),
         mediator=mediator,
     )
+    create_enter_grade_handler = EnterGradeHandler(
+        grade_book_reader=container.resolve(GradeBookReader),
+        grade_book_repo=container.resolve(GradeBookRepo),
+        user_reader=container.resolve(UserReader),
+        user_repo=container.resolve(UserRepo),
+        uow=container.resolve(UnitOfWork),
+    )
 
     mediator.register_command_handler(CreateUser, create_user_handler)
+    mediator.register_command_handler(EnterGrade, create_enter_grade_handler)
 
     return mediator
 
 
 def setup_repositories(container: Container) -> None:
+    container.register(UserReader, UserReaderImpl)
     container.register(UserRepo, UserRepoImpl)
+    container.register(GradeBookReader, GradeBookReaderImpl)
+    container.register(GradeBookRepo, GradeBookRepoImpl)
 
 
 def setup_db(container: Container) -> None:

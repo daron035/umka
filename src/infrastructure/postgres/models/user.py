@@ -4,7 +4,7 @@ from uuid import UUID
 
 import sqlalchemy as sa
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid6 import uuid7
 
 from .base import TimedBaseModel
@@ -19,3 +19,5 @@ class User(TimedBaseModel):
     last_name: Mapped[str]
     telegram_id: Mapped[int | None]
     deleted_at: Mapped[datetime | None] = mapped_column(default=None, server_default=sa.Null())
+
+    grades: Mapped[list["Grade"]] = relationship("Grade", back_populates="user")
