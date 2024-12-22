@@ -1,3 +1,7 @@
+# Show help message
+help:
+    just -l
+
 # App run
 run:
   just _py python -Om src
