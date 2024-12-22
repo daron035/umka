@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.application.common.interfaces.uow import UnitOfWork
 from src.application.grade_book.commands.enter_grade import EnterGrade, EnterGradeHandler
 from src.application.grade_book.interfaces.persistence.reader import GradeBookReader
+from src.application.grade_book.queries.get_grades import GetGradesByTgId, GetGradesByTgIdHandler
 from src.application.user.commands.create_user import CreateUser, CreateUserHandler
 from src.application.user.interfaces.persistence.reader import UserReader
 from src.application.user.interfaces.persistence.repo import GradeBookRepo, UserRepo
@@ -66,8 +67,14 @@ def setup_mediator(container: Container) -> MediatorImpl:
         uow=container.resolve(UnitOfWork),
     )
 
+    get_grades_by_id_handler = GetGradesByTgIdHandler(
+        grade_book_reader=container.resolve(GradeBookReader),
+    )
+
     mediator.register_command_handler(CreateUser, create_user_handler)
     mediator.register_command_handler(EnterGrade, create_enter_grade_handler)
+
+    mediator.register_query_handler(GetGradesByTgId, get_grades_by_id_handler)
 
     return mediator
 

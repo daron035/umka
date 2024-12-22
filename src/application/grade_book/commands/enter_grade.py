@@ -1,11 +1,8 @@
-import logging
-
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from uuid import UUID
 
 from src.application.common.interfaces.uow import UnitOfWork
-from src.application.common.transactional import transactional
 from src.application.grade_book.interfaces.persistence.reader import GradeBookReader
 from src.application.user.interfaces.persistence.reader import UserReader
 from src.application.user.interfaces.persistence.repo import GradeBookRepo, UserRepo
@@ -16,7 +13,6 @@ from src.infrastructure.mediator.interface.entities.command import Command
 from src.infrastructure.mediator.interface.handlers.command import CommandHandler
 
 
-logger = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from src.domain.grade.entities.subject import Subject
     from src.domain.user.value_objects.user_id import UserId
@@ -37,13 +33,11 @@ class EnterGradeHandler(CommandHandler[EnterGrade, UUID]):
     user_repo: UserRepo
     uow: UnitOfWork
 
-    @transactional
     async def __call__(self, command: EnterGrade) -> UUID:
         subj_score = SubjectScore(command.score)
         telegram_id = TgUserId(command.telegram_id)
 
         # TODO: объединить два метода в один, без reader
-        # logger.info("asdf")
         await self.user_repo.exists_user_by_tg_id(telegram_id)
         user_id: UserId = await self.user_reader.get_user_by_tg_id(telegram_id)
         subject: Subject = await self.grade_book_reader.get_subject_by_name(command.subject)

@@ -1,7 +1,7 @@
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.application.common.exceptions import CommitError, RollbackError, SessionCloseError
+from src.application.common.exceptions import CommitError, RollbackError
 from src.application.common.interfaces.uow import UnitOfWork
 
 
@@ -20,9 +20,3 @@ class SQLAlchemyUoW(UnitOfWork):
             await self._session.rollback()
         except SQLAlchemyError as err:
             raise RollbackError from err
-
-    async def close(self) -> None:
-        try:
-            await self._session.close()
-        except SQLAlchemyError as err:
-            raise SessionCloseError from err

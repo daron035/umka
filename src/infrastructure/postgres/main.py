@@ -26,9 +26,14 @@ class PostgresManager:
             pool_size=50,
             isolation_level="AUTOCOMMIT",
         )
+
+        self.session_factory = async_sessionmaker(
+            bind=self._async_engine,
+            autoflush=False,
+            expire_on_commit=False,
+        )
         self.read_only_session_factory = async_sessionmaker(
             bind=self._read_only_async_engine,
             autoflush=False,
             expire_on_commit=False,
         )
-        self.session_factory = async_sessionmaker(bind=self._async_engine, autoflush=False, expire_on_commit=False)

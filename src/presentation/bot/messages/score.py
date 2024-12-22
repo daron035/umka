@@ -38,10 +38,17 @@ class ScoreBuilder(BaseMessageBuilder):
     def __init__(self):
         self.builder = InlineKeyboardBuilder()
 
-        rows = [self._subjects[i:i + 2] for i in range(0, len(self._subjects), 2)]
+        rows = [self._subjects[i : i + 2] for i in range(0, len(self._subjects), 2)]
         for row in rows:
-            self.builder.row(
-                *[InlineKeyboardButton(text=subject, callback_data=subject) for subject in row]
-            )
+            self.builder.row(*[InlineKeyboardButton(text=subject, callback_data=subject) for subject in row])
 
         self._reply_markup = self.builder.as_markup()
+
+
+class ViewGradesBuilder(BaseMessageBuilder):
+    def __init__(self, grades: list) -> None:
+        if grades:
+            result = "\n".join(f"{grade.name} — {grade.score}" for grade in grades)
+        else:
+            result = "Пока пусто - воспользуйтесь командой /enter_scores"
+        self._text = result

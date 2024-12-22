@@ -1,3 +1,4 @@
+from src.application.grade_book.dto import GradeDTO
 from src.application.user import dto
 from src.domain.grade.entities import GradeEntity, SubjectEntity
 from src.domain.user.entities import UserEntity
@@ -36,4 +37,12 @@ def convert_grade_entity_to_db_model(grade: GradeEntity) -> GradeModel:
         user_id=grade.user_id.to_raw(),
         subject_id=grade.subject.oid,
         score=grade.score.to_raw(),
+    )
+
+
+def convert_db_model_to_grade_dto(grade: GradeModel, subject: SubjectModel) -> GradeDTO:
+    return GradeDTO(
+        id=grade.id,
+        name=subject.name,
+        score=grade.score,
     )

@@ -20,7 +20,3 @@ class UnitOfWorkImpl(UnitOfWork):
     async def rollback(self) -> None:
         for uow in self._uows:
             await uow.rollback()
-
-    async def close(self) -> None:
-        for uow in self._uows:
-            await uow.close()

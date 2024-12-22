@@ -7,6 +7,3 @@ class UnitOfWork(Protocol):
 
     async def rollback(self) -> None:
         raise NotImplementedError
-
-    async def close(self) -> None:
-        raise NotImplementedError

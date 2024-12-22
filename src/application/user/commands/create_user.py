@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from uuid import UUID
 
 from src.application.common.interfaces.uow import UnitOfWork
-from src.application.common.transactional import transactional
 from src.application.user.interfaces.persistence.repo import UserRepo
 from src.domain.user.entities import UserEntity
 from src.domain.user.value_objects import FullName, TgUserId, UserId
@@ -15,7 +14,7 @@ from src.infrastructure.mediator.interface.mediator import EventMediator
 class CreateUser(Command[UUID]):
     first_name: str
     last_name: str
-    telegram_id: int | None
+    telegram_id: int
 
 
 @dataclass(frozen=True)
@@ -24,7 +23,6 @@ class CreateUserHandler(CommandHandler[CreateUser, UUID]):
     uow: UnitOfWork
     mediator: EventMediator
 
-    @transactional
     async def __call__(self, command: CreateUser) -> UUID:
         user_id = UserId()
         full_name = FullName(command.first_name, command.last_name)

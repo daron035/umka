@@ -1,6 +1,7 @@
 from aiogram import types
 from aiogram.fsm.context import FSMContext
 
+from src.application.common.exceptions import ApplicationError
 from src.application.user.commands.create_user import CreateUser
 from src.infrastructure.containers import get_container
 from src.infrastructure.mediator.mediator import MediatorImpl
@@ -36,12 +37,11 @@ async def process_last_name(message: types.Message, state: FSMContext) -> None:
 
     try:
         await mediator.send(user)
-    except:
+    except ApplicationError:
         await message.answer("Что-то пошло не так, попробуйте с начала.")
         await state.clear()
         await state.set_state(RegisterState.first_name)
         await start_register_user(message)
-        # return
 
     await message.answer(f"Регистрация завершена! 🎉\nИмя: {first_name}\nФамилия: {last_name}")
     await state.clear()
