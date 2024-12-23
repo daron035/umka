@@ -16,8 +16,3 @@ class UnitOfWorkMock(UnitOfWork):
         if self.committed:
             raise ValueError("Cannot rollback after committing.")
         self.rolled_back = True
-
-    async def close(self) -> None:
-        if not (self.committed and self.committed):
-            raise ValueError("Cannot rollback after committing.")
-        self.session_closed = True

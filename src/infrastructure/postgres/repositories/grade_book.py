@@ -36,6 +36,7 @@ class GradeBookReaderImpl(SQLAlchemyRepo, GradeBookReader):
             .where(UserModel.telegram_id == tg_id)
         )
         result = await self._session.execute(query)
+        # TODO: yield
         grades = [convert_db_model_to_grade_dto(grade, subject) for grade, subject in result]
 
         return grades
