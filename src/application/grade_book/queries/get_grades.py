@@ -1,3 +1,5 @@
+import logging
+
 from collections.abc import Iterable
 from dataclasses import dataclass
 
@@ -6,6 +8,9 @@ from src.application.grade_book.interfaces.persistence.reader import GradeBookRe
 from src.domain.user.value_objects.tg_user_id import TgUserId
 from src.infrastructure.mediator.interface.entities.query import Query
 from src.infrastructure.mediator.interface.handlers.query import QueryHandler
+
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -19,6 +24,6 @@ class GetGradesByTgIdHandler(QueryHandler[GetGradesByTgId, Iterable[GradeDTO]]):
 
     async def __call__(self, command: GetGradesByTgId) -> Iterable[GradeDTO]:
         tg_id = TgUserId(command.tg_id)
-
         grades = await self.grade_book_reader.get_grades_by_tg_id(tg_id.to_raw())
+        logger.info("Get grades", extra={"grades": grades})
         return grades

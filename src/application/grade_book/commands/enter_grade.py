@@ -1,3 +1,5 @@
+import logging
+
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from uuid import UUID
@@ -16,6 +18,8 @@ from src.infrastructure.mediator.interface.handlers.command import CommandHandle
 if TYPE_CHECKING:
     from src.domain.grade.entities.subject import Subject
     from src.domain.user.value_objects.user_id import UserId
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -44,5 +48,7 @@ class EnterGradeHandler(CommandHandler[EnterGrade, UUID]):
         grade = Grade.create(user_id, subject, subj_score, telegram_id)
         await self.grade_book_repo.add(grade)
         await self.uow.commit()
+
+        logger.info("Grade entered", extra={"grade": grade})
 
         return user_id.to_raw()

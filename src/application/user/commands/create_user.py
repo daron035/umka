@@ -1,3 +1,5 @@
+import logging
+
 from dataclasses import dataclass
 from uuid import UUID
 
@@ -8,6 +10,9 @@ from src.domain.user.value_objects import FullName, TgUserId, UserId
 from src.infrastructure.mediator.interface.entities.command import Command
 from src.infrastructure.mediator.interface.handlers.command import CommandHandler
 from src.infrastructure.mediator.interface.mediator import EventMediator
+
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -33,5 +38,7 @@ class CreateUserHandler(CommandHandler[CreateUser, UUID]):
         await self.user_repo.add_user(user)
         await self.mediator.publish(user.pull_events())
         await self.uow.commit()
+
+        logger.info("User created", extra={"user": user})
 
         return user_id.to_raw()
